@@ -1,5 +1,6 @@
 #include "AED_Device.h"
 
+
 AED_Device::AED_Device()
 {
     charge_level = 100;
@@ -30,7 +31,7 @@ void AED_Device::powerOn()
         setDeviceMode(ACTIVE);
         std::cout << "Device is operational and ready for use.\n";
         std::cout << "[Visual -> Display Class: Green LED On]\n";
-        std::cout << "[Audible -> Audio: Beep Sound]\n"
+        std::cout << "[Audible -> Audio: Beep Sound]\n";
     }
     else
     {

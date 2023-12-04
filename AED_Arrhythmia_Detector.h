@@ -1,6 +1,9 @@
 #ifndef AED_ARRHYTHMIA_DETECTOR_H
 #define AED_ARRHYTHMIA_DETECTOR_H
 
+#include <string>
+#include <iostream>
+
 enum Heart_Rhythm
 {
     NORMAL,
@@ -20,11 +23,14 @@ public:
     bool isShockable();
 
     /*Set shock status*/
-    bool setShockStatus(bool shockStatus);
+    void setShockStatus(bool shockStatus);
 
 private:
     //AED_Electrode_Pads placement;
     bool shockable;
+
+    //
+    Heart_Rhythm currentHeartRhythm;
 
 
 };

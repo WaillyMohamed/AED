@@ -2,6 +2,7 @@
 #define AED_DEVICE_H
 
 #include <string>
+#include <iostream>
 
 enum DeviceMode{
     ACTIVE, //fully operational and ready to respond to emergency
@@ -28,7 +29,7 @@ public:
     void setDeviceMode(DeviceMode mode);
 
     /*Perform a self test*/
-    void selfTest();
+    bool selfTest();
 
 
 
