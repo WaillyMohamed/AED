@@ -1,11 +1,14 @@
 #include "aed_display.h"
 #include "ui_aed_display.h"
+#include "AED_Device.h"
 #include <filesystem>
 #include <iostream>
 #include <unistd.h>
 #include <QDebug>
 #include <QPixmap>
 #include <QLabel>
+
+AED_Device device;
 
 AED_Display::AED_Display(QWidget *parent)
     : QMainWindow(parent)
@@ -29,10 +32,11 @@ AED_Display::AED_Display(QWidget *parent)
     setLabelImage(ui->a_standclear,  ":/res/Stand_Clear.png", 150, 150);
     setLabelImage(ui->a_heart,  ":/res/AED_Heart.png", 150, 150);
 
+    // Initialize the device
+    device = AED_Device();
 
 
-
-    //connect(ui->pushButton, SIGNAL (released()), this, SLOT(powerOn())); // connect power button
+    connect(ui->pushButton, SIGNAL (released()), this, SLOT(powerOn())); // connect power button
 
 
 
@@ -46,7 +50,9 @@ AED_Display::~AED_Display()
 
 void AED_Display::powerOn()
 {
-
+    // when the power button is pressed the device should power on
+    device.powerOn();
+    ui->audioMessages->append(QString::fromStdString(device.powerOn()));
 }
 
 void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, int height){
@@ -54,3 +60,4 @@ void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, i
     label->setPixmap(image.scaled(width, height, Qt::KeepAspectRatio));
 
 }
+
