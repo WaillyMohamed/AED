@@ -49,7 +49,7 @@
     <property name="geometry">
      <rect>
       <x>330</x>
-      <y>190</y>
+      <y>170</y>
       <width>291</width>
       <height>191</height>
      </rect>
@@ -58,8 +58,8 @@
    <widget class="QLabel" name="a_responsiveness">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>230</y>
+      <x>70</x>
+      <y>100</y>
       <width>150</width>
       <height>120</height>
      </rect>
@@ -83,8 +83,8 @@
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>670</y>
+      <x>20</x>
+      <y>700</y>
       <width>261</width>
       <height>51</height>
      </rect>
@@ -97,7 +97,7 @@
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>660</y>
+      <y>680</y>
       <width>161</width>
       <height>71</height>
      </rect>
@@ -115,8 +115,8 @@
    <widget class="QLabel" name="attach_pads">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>220</y>
+      <x>700</x>
+      <y>200</y>
       <width>150</width>
       <height>120</height>
      </rect>
@@ -165,8 +165,8 @@
    <widget class="QLabel" name="a_cpr">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>370</y>
+      <x>70</x>
+      <y>310</y>
       <width>181</width>
       <height>121</height>
      </rect>
@@ -190,10 +190,10 @@
    <widget class="QLabel" name="a_standclear">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>430</y>
-      <width>150</width>
-      <height>131</height>
+      <x>630</x>
+      <y>470</y>
+      <width>171</width>
+      <height>141</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -215,10 +215,10 @@
    <widget class="QLabel" name="a_heart">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>430</y>
+      <x>410</x>
+      <y>380</y>
       <width>150</width>
-      <height>131</height>
+      <height>120</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -240,10 +240,10 @@
    <widget class="QLabel" name="a_cpr_2">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>430</y>
-      <width>181</width>
-      <height>121</height>
+      <x>210</x>
+      <y>470</y>
+      <width>191</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="minimumSize">
