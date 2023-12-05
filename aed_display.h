@@ -1,10 +1,12 @@
 #ifndef AED_DISPLAY_H
 #define AED_DISPLAY_H
 
-
+#include "AED_Device.h"
 
 #include <QMainWindow>
 #include <QLabel>
+#include <QElapsedTimer>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class AED_Display; }
@@ -21,9 +23,13 @@ public:
 private:
     Ui::AED_Display *ui;
     void setLabelImage(QLabel *label, const QString &path, int width, int height);
+    AED_Device device;
+ //   QElapsedTimer stopwatch;
+   // QTimer *update_t;
 
 private slots:
     void powerOn();
+//    void timerUp();
 
 };
 
