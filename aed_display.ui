@@ -262,6 +262,21 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QTextBrowser" name="audioMessages">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>190</y>
+      <width>291</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 0, 0);
+font: 75 10pt &quot;Serif&quot;;
+color: rgb(46, 194, 126);</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

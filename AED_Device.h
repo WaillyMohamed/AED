@@ -23,7 +23,7 @@ public:
     void shock();
 
     /*Perform self test and power on*/
-    void powerOn();
+    std::string powerOn();
 
     /*Set the device mode for the AED*/
     void setDeviceMode(DeviceMode mode);
