@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <iostream>
 #include <unistd.h>
+#include <QDebug>
 
 AED_Display::AED_Display(QWidget *parent)
     : QMainWindow(parent)
@@ -13,10 +14,11 @@ AED_Display::AED_Display(QWidget *parent)
     char temp[256];
     getcwd(temp, 256);
     std::string path = std::string(temp) + "/AED_Design.png"; // Display Interface
-    QString url = QString::fromStdString(path);
+    QString url = QString::fromStdString(":/images/AED_Design.png");
     QPixmap img(url);
     ui->label->setPixmap(url);
 
+    connect(ui->pushButton, SIGNAL (released()), this, SLOT(powerOn())); // connect power button
 
 
 }
