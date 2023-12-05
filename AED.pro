@@ -31,3 +31,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     AED_Design.png
+
+
+RESOURCES += \
+    resources.qrc

@@ -1,7 +1,10 @@
 #ifndef AED_DISPLAY_H
 #define AED_DISPLAY_H
 
+
+
 #include <QMainWindow>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class AED_Display; }
@@ -17,6 +20,7 @@ public:
 
 private:
     Ui::AED_Display *ui;
+    void setLabelImage(QLabel *label, const QString &path, int width, int height);
 
 private slots:
     void powerOn();
