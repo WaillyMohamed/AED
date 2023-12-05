@@ -165,8 +165,8 @@
    <widget class="QLabel" name="a_cpr">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>470</y>
+      <x>100</x>
+      <y>370</y>
       <width>181</width>
       <height>121</height>
      </rect>
@@ -232,6 +232,31 @@
     </property>
     <property name="text">
      <string>AED_Heart</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="a_cpr_2">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>430</y>
+      <width>181</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>120</height>
+     </size>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
+    <property name="text">
+     <string>CPR</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

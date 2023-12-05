@@ -1,11 +1,13 @@
 <RCC>
     <qresource prefix="/">
-      <file>res/Check_Responsiveness.png</file>
-      <file>res/Stand_Clear.png</file>
-      <file>res/Attach_Electrode.png</file>
-      <file>res/Ambulance_Step.png</file>
-      <file>res/AED_Heart.png</file>
-      <file>res/CPR_Step.png</file>
+        <file>res/Check_Responsiveness.png</file>
+        <file>res/Stand_Clear.png</file>
+        <file>res/Attach_Electrode.png</file>
+        <file>res/Ambulance_Step.png</file>
+        <file>res/AED_Heart.png</file>
+        <file>res/CPR_Step.png</file>
+        <file>res/CPR_Breath.PNG</file>
+        <file>res/CPR_Compressions.PNG</file>
     </qresource>
     <qresource prefix="/new/prefix1"/>
 </RCC>
