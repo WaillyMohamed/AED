@@ -262,21 +262,6 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="audioMessages">
-    <property name="geometry">
-     <rect>
-      <x>880</x>
-      <y>190</y>
-      <width>291</width>
-      <height>191</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 0, 0);
-font: 75 10pt &quot;Serif&quot;;
-color: rgb(46, 194, 126);</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="timer">
     <property name="geometry">
      <rect>
@@ -289,6 +274,44 @@ color: rgb(46, 194, 126);</string>
     <property name="text">
      <string>Timer</string>
     </property>
+   </widget>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>850</x>
+      <y>150</y>
+      <width>331</width>
+      <height>221</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>329</width>
+       <height>219</height>
+      </rect>
+     </property>
+     <widget class="QTextBrowser" name="audioMessages">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>291</width>
+        <height>191</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 0, 0);
+font: 75 10pt &quot;Serif&quot;;
+color: rgb(46, 194, 126);</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

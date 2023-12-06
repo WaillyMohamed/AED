@@ -55,14 +55,15 @@ AED_Display::~AED_Display()
 void AED_Display::powerOn()
 {
     // when the power button is pressed the device should power on
-
+    ui->pushButton->setEnabled(false);
     //my thought proccess: I wanted a way to display the messages one at a time. starting from "Starting AED".
     // should probably clear the screen afterwards.
     QString aed_status = "Starting AED...\nAED self test complete\nDevice is operational and ready to use";
     std::string message = device.powerOn();
     QStringList lines = aed_status.split("\n");
 
-    ui->audioMessages->append(QString::fromStdString(device.powerOn()));
+    ui->audioMessages->append("::Unit OK.\n::Stay Calm"); // Audio messages played for starting the AED
+
     if(message.find("Device is operational") != std::string::npos){
 
         ui->LCDScreen->append(lines.at(0));
@@ -115,25 +116,29 @@ void AED_Display::nextAEDStep(){
   switch (currentStep){
     case CheckResponsiveness:
     displayMessage = "CHECK RESPONSIVENESS!";
+    ui->audioMessages->append("::Check Responsiveness.");
     break;
     case CallForHelp:
     displayMessage = "CALL FOR HELP!";
+    ui->audioMessages->append("::Call for help.");
     break;
     case AttachElectrodes:
     displayMessage = "ATTACH ELECTRODES TO PATIENT'S CHEST";
+    ui->audioMessages->append("::Attach defib pads to patient's bare chest.");
     break;
     case StandClear:
     displayMessage = "STAND CLEAR";
+    ui->audioMessages->append("::Don't touch patient. Analyzing."); // Audio messages played for Standing Clear
     break;
     case CPRBreathing:
     displayMessage = "BEGIN CPR";
+    ui->audioMessages->append("::Start CPR.");
     break;
-
     case CheckCompressions:
     displayMessage = "START CPR BREATHING";
     break;
   }
-  ui->LCDScreen->append(displayMessage);
+  ui->LCDScreen->setText(displayMessage);
   ui->LCDScreen->setAlignment(Qt::AlignCenter);
 
   if (currentStep == CheckCompressions){
