@@ -26,7 +26,7 @@ private:
     void setLabelImage(QLabel *label, const QString &path, int width, int height);
     AED_Device device;
 
-    //Create an enum to represent the respective steps
+    //This represents the respective AED "steps"
     enum Step{
       CheckResponsiveness,
       CallForHelp,
@@ -36,7 +36,7 @@ private:
       CheckCompressions
     };
 
-    Step currentStep;
+    Step currentStep; //keep track of the current step
     QTimer *step_timer;
  //   QElapsedTimer stopwatch;
    // QTimer *update_t;

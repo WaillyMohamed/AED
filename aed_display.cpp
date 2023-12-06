@@ -15,7 +15,7 @@
 AED_Display::AED_Display(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::AED_Display),
-    currentStep(CheckResponsiveness)
+    currentStep(CheckResponsiveness) //initialize the current step -> check responsiveness
 {
     ui->setupUi(this);
     this->setWindowTitle("AED Device");
@@ -56,8 +56,8 @@ void AED_Display::powerOn()
 {
     // when the power button is pressed the device should power on
 
-    //thinking was, I wanted a way to display the messages one at a time. starting from "Starting AED".
-    // can remove if unneccessary
+    //my thought proccess: I wanted a way to display the messages one at a time. starting from "Starting AED".
+    // should probably clear the screen afterwards. can remove if unneccessary
     QString aed_status = "Starting AED...\nAED self test complete\nDevice is operational and ready to use";
     std::string message = device.powerOn();
     QStringList lines = aed_status.split("\n");
@@ -96,7 +96,11 @@ void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, i
 
 }
 
-/*Note: Figure out a way to end once last stage is reached*/
+/*Note: Figure out a way to end once last stage is reached
+This function handles the AED step progression
+It updates a displayImage at each step and displays the final message
+There has to be a better way?
+*/
 void AED_Display::nextAEDStep(){
   QString displayMessage;
   switch (currentStep){
@@ -125,7 +129,8 @@ void AED_Display::nextAEDStep(){
   if (currentStep == CheckCompressions){
     currentStep = CheckResponsiveness;
   }else{
-    std::cout<<"Here is the value of current step after the switch statement" <<std::endl;
+    std::cout <<"[AED NEXT STEP] Inside the switch statement" << std::endl;
+    std::cout<<"Here is the value of current step" <<std::endl;
     currentStep = static_cast<Step>(static_cast<int>(currentStep) + 1);
     std::cout<< currentStep << std::endl;
   }
