@@ -2,8 +2,8 @@
 Simulate an Automated Defibrillator 
 
 
-#### Team Members
-Team 43: Zoe
+#### Team Members - 
+## TA: Zoe
 - Chigozirim Eke
 - Wailly Mohamed
 - Temi Fagbohungbe
