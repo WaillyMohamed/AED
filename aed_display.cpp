@@ -14,7 +14,8 @@
 
 AED_Display::AED_Display(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::AED_Display)
+    , ui(new Ui::AED_Display),
+    currentStep(CheckResponsiveness)
 {
     ui->setupUi(this);
     this->setWindowTitle("AED Device");
@@ -32,6 +33,7 @@ AED_Display::AED_Display(QWidget *parent)
     ui->timer->setText("00:00");
     // Initialize the device
     device = AED_Device();
+    step_timer = new QTimer(this);
 
     // Initialize the timer
     /*
@@ -47,13 +49,36 @@ AED_Display::AED_Display(QWidget *parent)
 AED_Display::~AED_Display()
 {
     delete ui;
+    delete step_timer;
 }
 
 void AED_Display::powerOn()
 {
     // when the power button is pressed the device should power on
-    device.powerOn();
+
+    //thinking was, I wanted a way to display the messages one at a time. starting from "Starting AED".
+    // can remove if unneccessary
+    QString aed_status = "Starting AED...\nAED self test complete\nDevice is operational and ready to use";
+    std::string message = device.powerOn();
+    QStringList lines = aed_status.split("\n");
+
     ui->audioMessages->append(QString::fromStdString(device.powerOn()));
+    if(message.find("Device is operational") != std::string::npos){
+
+        ui->LCDScreen->append(lines.at(0));
+        QTimer::singleShot(1000, [=]{
+            ui->LCDScreen->append(lines.at(1));
+
+            QTimer::singleShot(1000, [=]{
+                ui->LCDScreen->append(lines.at(2));
+
+                connect(step_timer, &QTimer::timeout, this, &AED_Display::nextAEDStep);
+                step_timer->start(5000);
+            });
+        });
+
+
+    }
     //stopwatch.start();
     //update_t->start(1000);
 }
@@ -71,3 +96,37 @@ void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, i
 
 }
 
+/*Note: Figure out a way to end once last stage is reached*/
+void AED_Display::nextAEDStep(){
+  QString displayMessage;
+  switch (currentStep){
+    case CheckResponsiveness:
+    displayMessage = "CHECK RESPONSIVENESS!";
+    break;
+    case CallForHelp:
+    displayMessage = "CALL FOR HELP!";
+    break;
+    case AttachElectrodes:
+    displayMessage = "ATTACH ELECTRODES TO PATIENT'S CHEST";
+    break;
+    case StandClear:
+    displayMessage = "STAND CLEAR";
+    break;
+    case CPRBreathing:
+    displayMessage = "BEGIN CPR";
+    break;
+
+    case CheckCompressions:
+    displayMessage = "START CPR BREATHING";
+    break;
+  }
+  ui->LCDScreen->append(displayMessage);
+
+  if (currentStep == CheckCompressions){
+    currentStep = CheckResponsiveness;
+  }else{
+    std::cout<<"Here is the value of current step after the switch statement" <<std::endl;
+    currentStep = static_cast<Step>(static_cast<int>(currentStep) + 1);
+    std::cout<< currentStep << std::endl;
+  }
+}

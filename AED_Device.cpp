@@ -31,9 +31,9 @@ std::string AED_Device::powerOn()
     {
         setDeviceMode(ACTIVE);
         std::cout << "Device is operational and ready for use.\n";
-        std::cout << "[Visual -> Display Class: Green LED On]\n";
-        std::cout << "[Audible -> Audio: Beep Sound]\n";
-        message = "Device is operational and ready for use.\n[Visual -> Display Class: Green LED On]\n[Audible -> Audio: Beep Sound]\n";
+        std::cout << "[Display: Green LED On]\n";
+        std::cout << "[AUDIO: Beep Sound]\n";
+        message = "Device is operational and ready for use\nAudio: Beep Sound\n";
     }
     else
     {

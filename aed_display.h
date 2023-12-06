@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QElapsedTimer>
 #include <QTimer>
+#include <QWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class AED_Display; }
@@ -24,11 +25,25 @@ private:
     Ui::AED_Display *ui;
     void setLabelImage(QLabel *label, const QString &path, int width, int height);
     AED_Device device;
+
+    //Create an enum to represent the respective steps
+    enum Step{
+      CheckResponsiveness,
+      CallForHelp,
+      AttachElectrodes,
+      StandClear,
+      CPRBreathing,
+      CheckCompressions
+    };
+
+    Step currentStep;
+    QTimer *step_timer;
  //   QElapsedTimer stopwatch;
    // QTimer *update_t;
 
 private slots:
     void powerOn();
+    void nextAEDStep();
 //    void timerUp();
 
 };
