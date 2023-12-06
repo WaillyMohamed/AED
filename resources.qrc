@@ -8,6 +8,10 @@
         <file>res/CPR_Step.png</file>
         <file>res/CPR_Breath.PNG</file>
         <file>res/CPR_Compressions.PNG</file>
+        <file>Waveforms/Asystole.PNG</file>
+        <file>Waveforms/Sinus Rhythm or Pulseless Electrical Activity.PNG</file>
+        <file>Waveforms/Ventricular Fibrillation.PNG</file>
+        <file>Waveforms/Ventricular Tachycardia.PNG</file>
     </qresource>
     <qresource prefix="/new/prefix1"/>
 </RCC>

@@ -281,7 +281,7 @@
       <x>850</x>
       <y>150</y>
       <width>331</width>
-      <height>221</height>
+      <height>211</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -293,15 +293,15 @@
        <x>0</x>
        <y>0</y>
        <width>329</width>
-       <height>219</height>
+       <height>209</height>
       </rect>
      </property>
      <widget class="QTextBrowser" name="audioMessages">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>10</y>
-        <width>291</width>
+        <width>311</width>
         <height>191</height>
        </rect>
       </property>
