@@ -57,7 +57,7 @@ void AED_Display::powerOn()
     // when the power button is pressed the device should power on
 
     //my thought proccess: I wanted a way to display the messages one at a time. starting from "Starting AED".
-    // should probably clear the screen afterwards. can remove if unneccessary
+    // should probably clear the screen afterwards.
     QString aed_status = "Starting AED...\nAED self test complete\nDevice is operational and ready to use";
     std::string message = device.powerOn();
     QStringList lines = aed_status.split("\n");
@@ -72,8 +72,14 @@ void AED_Display::powerOn()
             QTimer::singleShot(1000, [=]{
                 ui->LCDScreen->append(lines.at(2));
 
-                connect(step_timer, &QTimer::timeout, this, &AED_Display::nextAEDStep);
-                step_timer->start(5000);
+                QTimer::singleShot(1000, [=]{
+                    ui->LCDScreen->clear();
+
+                    connect(step_timer, &QTimer::timeout, this, &AED_Display::nextAEDStep);
+                    step_timer->start(5000);
+
+                });
+
             });
         });
 
@@ -99,7 +105,10 @@ void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, i
 /*Note: Figure out a way to end once last stage is reached
 This function handles the AED step progression
 It updates a displayImage at each step and displays the final message
-There has to be a better way?
+
+Status: Complete!
+
+@TODO: Put the respective audio for each stage too
 */
 void AED_Display::nextAEDStep(){
   QString displayMessage;
@@ -125,9 +134,11 @@ void AED_Display::nextAEDStep(){
     break;
   }
   ui->LCDScreen->append(displayMessage);
+  ui->LCDScreen->setAlignment(Qt::AlignCenter);
 
   if (currentStep == CheckCompressions){
     currentStep = CheckResponsiveness;
+    step_timer->stop();
   }else{
     std::cout <<"[AED NEXT STEP] Inside the switch statement" << std::endl;
     std::cout<<"Here is the value of current step" <<std::endl;
