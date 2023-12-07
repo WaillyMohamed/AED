@@ -37,6 +37,7 @@ private:
       CallForHelp,
       AttachElectrodes,
       StandClear,
+      StandClearShock,
       CPRBreathing,
       CheckCompressions
     };

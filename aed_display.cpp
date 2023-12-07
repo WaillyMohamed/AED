@@ -135,8 +135,19 @@ void AED_Display::nextAEDStep(){
     case StandClear:
     displayMessage = "STAND CLEAR";
     ui->audioMessages->append("::Don't touch patient. Analyzing."); // Audio messages played for Standing Clear
-    d_waveform(); // called after stand clear for analysis of the patient
+    QTimer::singleShot(3000, [=]{
+        d_waveform(); // called after stand clear for analysis of the patient
+    });
+    break;
+    case StandClearShock:
+    displayMessage = "STAND CLEAR (Shock Warning)\nDO NOT touch patient.";
+    ui->audioMessages->append("::Shock will be delivered in three, two, one");
+    step_timer->stop(); // let the timer stop and then resume after the next audio message
+    QTimer::singleShot(3000, [=]{
+        ui->audioMessages->append("::Shock tone beeps. Shock Delivered");
+        step_timer->start(5000);
 
+    });
     break;
     case CPRBreathing:
     displayMessage = "BEGIN CPR";
@@ -161,8 +172,9 @@ void AED_Display::nextAEDStep(){
 }
 
 void AED_Display::display_shock()
-{
-
+{ // When the shock button is clicked this function is called
+    step_timer->start(100); // Restart the timer again.
+    ui->shock_button->setEnabled(false); // The shock button should not do anything unless another shockable rhythm is found
 }
 
 void AED_Display::d_waveform()
@@ -193,6 +205,7 @@ void AED_Display::d_waveform()
     }
     else{ // if the detected rhythm is shockable
         ui->shock_button->setEnabled(true);
+        step_timer->stop(); // Stop steps timer to allow the user to click the shock button
     }
 
 
