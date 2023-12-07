@@ -7,7 +7,7 @@ AED_Arrhythmia_Detector::AED_Arrhythmia_Detector()
 
 
 
-bool AED_Arrhythmia_Detector::detectHeartRhythm()
+int AED_Arrhythmia_Detector::detectHeartRhythm()
 {
     bool padsAligned = true; // assume the pads are aligned
     if (!padsAligned) {
@@ -18,19 +18,27 @@ bool AED_Arrhythmia_Detector::detectHeartRhythm()
     int shockableRhythm = rand() % 2;
 
     if (shockableRhythm == 1) {
+        shockable = true;
         int rhythmType = rand() % 2;
         if (rhythmType == 0) {
             currentHeartRhythm = VENTRICULAR_FIBRILLATION;
+            return 0; // returns 0
         } else {
             currentHeartRhythm = VENTRICULAR_TACHYCARDIA;
+            return 1; // returns 1
         }
-        shockable = true;
     } else {
-        currentHeartRhythm = NORMAL;
         shockable = false;
-    }
+        int rhythmType = rand() % 2;
+        if (rhythmType == 0) {
+            currentHeartRhythm = ASYSTOLE;
+            return 2; // returns 0
+        } else {
+            currentHeartRhythm = SINUS_RHYTHM_OR_PEA;
+            return 3; // returns 1
+        }
 
-    return true;
+    }
 }   
 
 

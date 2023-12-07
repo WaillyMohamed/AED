@@ -6,7 +6,8 @@
 
 enum Heart_Rhythm
 {
-    NORMAL,
+    ASYSTOLE,
+    SINUS_RHYTHM_OR_PEA,
     VENTRICULAR_FIBRILLATION,
     VENTRICULAR_TACHYCARDIA
 };
@@ -17,7 +18,7 @@ class AED_Arrhythmia_Detector
 public:
     AED_Arrhythmia_Detector();
 
-    bool detectHeartRhythm();
+    int detectHeartRhythm();
 
     /*Determines if the rhythm is shockable*/
     bool isShockable();

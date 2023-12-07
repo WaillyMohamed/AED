@@ -27,7 +27,15 @@ AED_Display::AED_Display(QWidget *parent)
     setLabelImage(ui->a_cpr,  ":/res/CPR_Breath.PNG", 150, 150);
     setLabelImage(ui->a_cpr_2,  ":/res/CPR_Compressions.PNG", 150, 150);
     setLabelImage(ui->a_standclear,  ":/res/Stand_Clear.png", 150, 150);
-    setLabelImage(ui->a_heart,  ":/res/AED_Heart.png", 150, 150);
+
+
+    // Add shock button
+
+    ui->shock_button->setIcon(QIcon(":/res/AED_Heart.png"));
+    ui->shock_button->setFixedSize(210,210);
+    ui->shock_button->setIconSize(QSize(210,210));
+    ui->shock_button->setEnabled(false); // disable this button until shockable rhythm is found.
+
 
     // Set timer to 0
     ui->timer->setText("00:00");
@@ -40,9 +48,7 @@ AED_Display::AED_Display(QWidget *parent)
     update_t = new QTimer(this);
     connect(update_t, SIGNAL(timeout()), this, SLOT(timerUp())); */
     connect(ui->pushButton, SIGNAL (released()), this, SLOT(powerOn())); // connect power button
-
-
-
+    connect(ui->shock_button, SIGNAL (released()), this, SLOT(display_shock())); // connect power button
 
 }
 
@@ -129,6 +135,8 @@ void AED_Display::nextAEDStep(){
     case StandClear:
     displayMessage = "STAND CLEAR";
     ui->audioMessages->append("::Don't touch patient. Analyzing."); // Audio messages played for Standing Clear
+    d_waveform(); // called after stand clear for analysis of the patient
+
     break;
     case CPRBreathing:
     displayMessage = "BEGIN CPR";
@@ -150,4 +158,42 @@ void AED_Display::nextAEDStep(){
     currentStep = static_cast<Step>(static_cast<int>(currentStep) + 1);
     std::cout<< currentStep << std::endl;
   }
+}
+
+void AED_Display::display_shock()
+{
+
+}
+
+void AED_Display::d_waveform()
+{
+    rhythm = detect.detectHeartRhythm();
+    if(rhythm == 0){ // Ventricular Fibrillation
+        setLabelImage(ui->waveform,  ":/Waveforms/Ventricular Fibrillation.PNG",361, 200);
+        ui->waveform_type->setText("Ventricular Fibrillation");
+
+    }
+    else if(rhythm == 1){ // Ventricular Tachycardia
+        setLabelImage(ui->waveform,  ":/Waveforms/Ventricular Tachycardia.PNG", 361, 200);
+        ui->waveform_type->setText("Ventricular Tachycardia");
+    }
+    else if(rhythm == 2){ // ASYSTOLE
+        setLabelImage(ui->waveform,  ":/Waveforms/Asystole.PNG", 361, 200);
+        ui->waveform_type->setText("ASYSTOLE");
+    }
+    else{ // Sinus Rhythm or Pulseless Electrical Activity
+        setLabelImage(ui->waveform,  ":/Waveforms/Sinus Rhythm or Pulseless Electrical Activity.PNG", 361, 200);
+        ui->waveform_type->setText("Sinus Rhythm or Pulseless Electrical Activity");
+    }
+    ui->waveform_type->setAlignment(Qt::AlignCenter);
+
+    // Checking if the rhythm is shockable and if so displaying the corresponding audio messages
+    if(!detect.isShockable()){
+        ui->audioMessages->append("::No shock advised");
+    }
+    else{ // if the detected rhythm is shockable
+        ui->shock_button->setEnabled(true);
+    }
+
+
 }

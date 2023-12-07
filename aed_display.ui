@@ -14,51 +14,23 @@
    <string>AED_Display</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>1029</width>
-      <height>652</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>1031</width>
-      <height>16777215</height>
-     </size>
-    </property>
-    <property name="baseSize">
-     <size>
-      <width>1029</width>
-      <height>65</height>
-     </size>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QTextBrowser" name="LCDScreen">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>250</x>
       <y>160</y>
       <width>361</width>
       <height>201</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
    </widget>
    <widget class="QLabel" name="a_responsiveness">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>30</x>
       <y>100</y>
       <width>150</width>
       <height>120</height>
@@ -115,7 +87,7 @@
    <widget class="QLabel" name="attach_pads">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>660</x>
       <y>200</y>
       <width>150</width>
       <height>120</height>
@@ -140,7 +112,7 @@
    <widget class="QLabel" name="a_help">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>350</x>
       <y>10</y>
       <width>150</width>
       <height>120</height>
@@ -165,7 +137,7 @@
    <widget class="QLabel" name="a_cpr">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>30</x>
       <y>310</y>
       <width>181</width>
       <height>121</height>
@@ -190,7 +162,7 @@
    <widget class="QLabel" name="a_standclear">
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>590</x>
       <y>470</y>
       <width>171</width>
       <height>141</height>
@@ -212,35 +184,10 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="a_heart">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>380</y>
-      <width>150</width>
-      <height>120</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>150</width>
-      <height>120</height>
-     </size>
-    </property>
-    <property name="lineWidth">
-     <number>1</number>
-    </property>
-    <property name="text">
-     <string>AED_Heart</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="a_cpr_2">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>170</x>
       <y>470</y>
       <width>191</width>
       <height>131</height>
@@ -265,7 +212,7 @@
    <widget class="QLabel" name="timer">
     <property name="geometry">
      <rect>
-      <x>610</x>
+      <x>570</x>
       <y>160</y>
       <width>62</width>
       <height>17</height>
@@ -312,6 +259,48 @@ color: rgb(46, 194, 126);</string>
       </property>
      </widget>
     </widget>
+   </widget>
+   <widget class="QLabel" name="waveform">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>280</y>
+      <width>361</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="waveform_type">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>330</y>
+      <width>341</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">text-align: center;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="shock_button">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>370</y>
+      <width>210</width>
+      <height>210</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

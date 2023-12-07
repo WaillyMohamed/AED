@@ -2,6 +2,7 @@
 #define AED_DISPLAY_H
 
 #include "AED_Device.h"
+#include "AED_Arrhythmia_Detector.h"
 
 #include <QMainWindow>
 #include <QLabel>
@@ -24,7 +25,11 @@ public:
 private:
     Ui::AED_Display *ui;
     void setLabelImage(QLabel *label, const QString &path, int width, int height);
+    void d_waveform(); // This method analyzes and displays the waveform. It also performs a shock on the patient if the rhythm is shockable.
+
     AED_Device device;
+    AED_Arrhythmia_Detector detect;
+    int rhythm; // 0 VF, 1 VT, 2 ASYSTOLE, 3 SINUS
 
     //This represents the respective AED "steps"
     enum Step{
@@ -38,12 +43,12 @@ private:
 
     Step currentStep; //keep track of the current step
     QTimer *step_timer;
- //   QElapsedTimer stopwatch;
-   // QTimer *update_t;
+
 
 private slots:
     void powerOn();
     void nextAEDStep();
+    void display_shock();
 //    void timerUp();
 
 };
