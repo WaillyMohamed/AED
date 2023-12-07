@@ -30,6 +30,7 @@ private:
     AED_Device device;
     AED_Arrhythmia_Detector detect;
     int rhythm; // 0 VF, 1 VT, 2 ASYSTOLE, 3 SINUS
+    int shock_count; // shock count wthat would be incremented
 
     //This represents the respective AED "steps"
     enum Step{
@@ -39,18 +40,19 @@ private:
       StandClear,
       StandClearShock,
       CPRBreathing,
-      CheckCompressions
+      CheckCompressions,
     };
 
     Step currentStep; //keep track of the current step
     QTimer *step_timer;
+    QElapsedTimer displaytimer;
 
 
 private slots:
     void powerOn();
     void nextAEDStep();
     void display_shock();
-//    void timerUp();
+    void timerUp();
 
 };
 

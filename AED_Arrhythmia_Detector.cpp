@@ -1,4 +1,5 @@
 #include "AED_Arrhythmia_Detector.h"
+#include <ctime>
 
 AED_Arrhythmia_Detector::AED_Arrhythmia_Detector()
 {
@@ -15,6 +16,7 @@ int AED_Arrhythmia_Detector::detectHeartRhythm()
         return false;
     }
 
+    srand(time(NULL));
     int shockableRhythm = rand() % 2;
 
     if (shockableRhythm == 1) {
@@ -39,8 +41,7 @@ int AED_Arrhythmia_Detector::detectHeartRhythm()
         }
 
     }
-}   
-
+}
 
 /*Determines if the rhythm is shockable*/
 bool AED_Arrhythmia_Detector::isShockable()

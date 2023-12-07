@@ -31,6 +31,9 @@ public:
     /*Perform a self test*/
     bool selfTest();
 
+    /*Set charge level*/
+    void setChargeLevel(int cl);
+
 
 
 

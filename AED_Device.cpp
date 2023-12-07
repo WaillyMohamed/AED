@@ -11,12 +11,6 @@ int AED_Device::getchargeLevel()
 {
     return charge_level;
 }
-
-void AED_Device::shock()
-{
-
-}
-
 /*
 This function initiates a self test to ensure the device is functioning properly and ready for use. Provide visual and audible indication that is it operational
 
@@ -50,6 +44,11 @@ std::string AED_Device::powerOn()
 void AED_Device::setDeviceMode(DeviceMode newMode)
 {
     mode = newMode;
+
+}
+
+void AED_Device::setChargeLevel(int cl){
+  charge_level = cl;
 
 }
 
