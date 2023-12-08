@@ -25,6 +25,9 @@ AED_Display::AED_Display(QWidget *parent)
     setLabelImage(ui->a_cpr_2,  ":/res/CPR_Compressions.PNG", 150, 150);
     setLabelImage(ui->a_standclear,  ":/res/Stand_Clear.png", 150, 150);
 
+    // Disable buttons for adult or child pad until place electrode step happens
+    ui->adult->setEnabled(false);
+    ui->child->setEnabled(false);
 
     // Add shock button
 
@@ -39,7 +42,7 @@ AED_Display::AED_Display(QWidget *parent)
     // Initialize the device
     device = AED_Device();
     step_timer = new QTimer(this);
-    displaytimer = new QTimer(this);
+    displaytimer = new QTimer(this); // timer to update the stopwatch
 
     //Initialize the number of shocks
     shock_count = 0;
@@ -47,9 +50,9 @@ AED_Display::AED_Display(QWidget *parent)
     // Initialize the timer
     connect(displaytimer, &QTimer::timeout, this, &AED_Display::updateTimer);
 
-    /*
-    update_t = new QTimer(this);
-    connect(update_t, SIGNAL(timeout()), this, SLOT(timerUp())); */
+
+    connect(ui->adult, SIGNAL(released()), this, SLOT(adultPads()));
+    connect(ui->child, SIGNAL(released()), this, SLOT(childPads()));
     connect(ui->pushButton, SIGNAL (released()), this, SLOT(powerOn())); // connect power button
     connect(ui->shock_button, SIGNAL (released()), this, SLOT(display_shock())); // connect power button
 
@@ -113,6 +116,24 @@ void AED_Display::updateTimer()
     ui->timer->setText(QString::fromStdString(device.displayTime()));
 }
 
+void AED_Display::adultPads()
+{
+    // Disable both buttons
+    ui->adult->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(51, 209, 122);");
+    ui->adult->setEnabled(false);
+    ui->child->setEnabled(false);
+    step_timer->start(5000);
+}
+
+void AED_Display::childPads()
+{
+
+    ui->child->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(51, 209, 122);");
+    ui->adult->setEnabled(false);
+    ui->child->setEnabled(false);
+    step_timer->start(5000);
+}
+
 void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, int height){
     QPixmap image(path);
     label->setPixmap(image.scaled(width, height, Qt::KeepAspectRatio));
@@ -143,7 +164,11 @@ void AED_Display::nextAEDStep(){
     break;
     case AttachElectrodes:
     displayMessage = "ATTACH ELECTRODES TO CHEST";
+    // Allow user to choose which electrodes to place
+    ui->adult->setEnabled(true);
+    ui->child->setEnabled(true);
     ui->audioMessages->append("::Attach defib pads to patient's bare chest.");
+    step_timer->stop(); // stop timer to give user time to choose which electrodes to place
     break;
     case StandClear:
     displayMessage = "ANALYSING PATIENT..";

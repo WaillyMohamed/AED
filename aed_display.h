@@ -55,7 +55,8 @@ private slots:
     void display_shock();
     void timerUp();
     void updateTimer();
-
+    void adultPads();
+    void childPads();
 };
 
 
