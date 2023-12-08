@@ -35,7 +35,7 @@ AED_Display::AED_Display(QWidget *parent)
     ui->shock_button->setFixedSize(210,210);
     ui->shock_button->setIconSize(QSize(210,210));
     ui->shock_button->setEnabled(false); // disable this button until shockable rhythm is found.
-
+    ui->shockCount->setText("Shock: 0");
 
     // Set timer to 0
     ui->timer->setText("00:00");
@@ -218,7 +218,7 @@ void AED_Display::display_shock()
 { // When the shock button is clicked this function is called
     ++shock_count;
     device.setChargeLevel(device.getchargeLevel()-3);
-    QString shock_count_string =  QString("shock: %1").arg(shock_count);
+    QString shock_count_string =  QString("Shock: %1").arg(shock_count);
     ui->shockCount->setText(shock_count_string);
     ui->progressBar->setValue(device.getchargeLevel());
     qDebug() << "Here is the value of charge level: " << device.getchargeLevel();
