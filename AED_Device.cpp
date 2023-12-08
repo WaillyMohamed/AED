@@ -5,6 +5,7 @@ AED_Device::AED_Device()
 {
     charge_level = 100;
     mode = STANDBY;
+    seconds = 0;
 }
 
 int AED_Device::getchargeLevel()
@@ -50,6 +51,32 @@ void AED_Device::setDeviceMode(DeviceMode newMode)
 void AED_Device::setChargeLevel(int cl){
   charge_level = cl;
 
+}
+
+int AED_Device::getSeconds() const
+{
+    return seconds;
+}
+
+void AED_Device::update()
+{
+    seconds++;
+}
+
+std::string AED_Device::displayTime()
+{
+    std::string time = "";
+    int mm = seconds / 60;
+    int ss = seconds % 60;
+    if(mm < 10){ // if the number is in double digits
+        time = "0";
+    }
+    time += std::to_string(mm) + ":";
+    if (ss < 10){
+        time += "0";
+    }
+    time += std::to_string(ss);
+    return time;
 }
 
 bool AED_Device::selfTest()

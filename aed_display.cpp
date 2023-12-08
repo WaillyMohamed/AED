@@ -39,11 +39,14 @@ AED_Display::AED_Display(QWidget *parent)
     // Initialize the device
     device = AED_Device();
     step_timer = new QTimer(this);
+    displaytimer = new QTimer(this);
 
     //Initialize the number of shocks
     shock_count = 0;
 
     // Initialize the timer
+    connect(displaytimer, &QTimer::timeout, this, &AED_Display::updateTimer);
+
     /*
     update_t = new QTimer(this);
     connect(update_t, SIGNAL(timeout()), this, SLOT(timerUp())); */
@@ -62,7 +65,7 @@ void AED_Display::powerOn()
 {
     // when the power button is pressed the device should power on
     ui->pushButton->setEnabled(false);
-    displaytimer.start();
+    displaytimer->start(1000);
     //my thought proccess: I wanted a way to display the messages one at a time. starting from "Starting AED".
     // should probably clear the screen afterwards.
     QString aed_status = "Starting AED...\nAED self test complete\nDevice is operational and ready to use";
@@ -98,9 +101,16 @@ void AED_Display::powerOn()
 
 void AED_Display::timerUp()
 {
-    qint64 c_time = displaytimer.elapsed() / 1000; // time passed in seconds
-    ui->timer->setText(QString::fromStdString(std::to_string(c_time)));
+    //qint64 c_time = displaytimer.elapsed() / 1000; // time passed in seconds
+    //ui->timer->setText(QString::fromStdString(std::to_string(c_time)));
 
+}
+
+void AED_Display::updateTimer()
+{
+    // update the amount of seconds and display the minutes and seconds mm:ss
+    device.update();
+    ui->timer->setText(QString::fromStdString(device.displayTime()));
 }
 
 void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, int height){
@@ -119,9 +129,12 @@ Status: Complete!
 */
 void AED_Display::nextAEDStep(){
   QString displayMessage;
+  AED_Audio c;
   switch (currentStep){
     case CheckResponsiveness:
     displayMessage = "CHECK RESPONSIVENESS!";
+
+    c.checkBreathing();
     ui->audioMessages->append("::Check Responsiveness.");
     break;
     case CallForHelp:

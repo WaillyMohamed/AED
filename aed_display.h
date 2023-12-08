@@ -3,10 +3,11 @@
 
 #include "AED_Device.h"
 #include "AED_Arrhythmia_Detector.h"
+#include "AED_Audio.h"
 
 #include <QMainWindow>
 #include <QLabel>
-#include <QElapsedTimer>
+
 #include <QTimer>
 #include <QWidget>
 
@@ -45,7 +46,7 @@ private:
 
     Step currentStep; //keep track of the current step
     QTimer *step_timer;
-    QElapsedTimer displaytimer;
+    QTimer *displaytimer;
 
 
 private slots:
@@ -53,6 +54,7 @@ private slots:
     void nextAEDStep();
     void display_shock();
     void timerUp();
+    void updateTimer();
 
 };
 

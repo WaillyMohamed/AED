@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 
+
 enum DeviceMode{
     ACTIVE, //fully operational and ready to respond to emergency
     STANDBY // low-power or inactive state
@@ -37,9 +38,15 @@ public:
 
 
 
+    int getSeconds() const;
+    void update();
+    std::string displayTime(); // Method will takes seconds and return a string that formats the time in hours and minutes
+
+
 private:
     int charge_level;
     DeviceMode mode;
+    int seconds;
 };
 
 #endif // AED_DEVICE_H
