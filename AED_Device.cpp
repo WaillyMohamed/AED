@@ -90,3 +90,8 @@ bool AED_Device::selfTest()
         return true;
     }
 }
+
+int AED_Device::compressionDepth(){
+  srand(time(NULL));
+  return rand() % 3;
+}

@@ -13,13 +13,15 @@ SOURCES += \
     AED_Audio.cpp \
     AED_Device.cpp \
     main.cpp \
-    aed_display.cpp
+    aed_display.cpp \
+    AED_Electrode_Pads.cpp
 
 HEADERS += \
     AED_Arrhythmia_Detector.h \
     AED_Audio.h \
     AED_Device.h \
-    aed_display.h
+    aed_display.h \
+    AED_Electrode_Pads.h
 
 FORMS += \
     aed_display.ui

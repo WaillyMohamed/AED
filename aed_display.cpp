@@ -193,9 +193,20 @@ void AED_Display::nextAEDStep(){
     });
     break;
     case CPRBreathing:
+  {
+
     displayMessage = "BEGIN CPR";
     ui->audioMessages->append("::Start CPR.");
+    int compression_depth = device.compressionDepth();
+    if (compression_depth == 0){
+      ui->audioMessages->append("::Push harder. Compressions are weak");
+    }else if(compression_depth == 1){
+      ui->audioMessages->append("::Good compression depth. Begin 2 min CPR");
+    }else if (compression_depth == 2){
+      ui->audioMessages->append("::Weaken push. Compressions are too deep");
+    }
     break;
+    }
     case CheckCompressions:
     displayMessage = "START CPR BREATHING";
     break;

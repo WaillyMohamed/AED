@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <ctime>
 
 
 enum DeviceMode{
@@ -34,6 +35,9 @@ public:
 
     /*Set charge level*/
     void setChargeLevel(int cl);
+
+    /*Compression Depth - this function determines what is a good vs weak compression*/
+    int compressionDepth();
 
 
 
