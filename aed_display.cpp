@@ -43,11 +43,11 @@ AED_Display::AED_Display(QWidget *parent)
     device = AED_Device();
     step_timer = new QTimer(this);
     displaytimer = new QTimer(this); // timer to update the stopwatch
-
+    cpr_compressions = new QTimer(this);
     //Initialize the number of shocks
     shock_count = 0;
 
-    // Initialize the timer
+    // Initialize the timers
     connect(displaytimer, &QTimer::timeout, this, &AED_Display::updateTimer);
 
 
@@ -134,6 +134,20 @@ void AED_Display::childPads()
     step_timer->start(5000);
 }
 
+void AED_Display::cpr_check()
+{
+    int compression_depth = device.compressionDepth();
+    if (compression_depth == 0){
+      ui->audioMessages->append("::Push harder. Compressions are weak");
+    }else if(compression_depth == 1){
+      ui->audioMessages->append("::Good compression depth. Begin 2 min CPR");
+      cpr_compressions->stop();
+      step_timer->start(5000);
+    }else if (compression_depth == 2){
+      ui->audioMessages->append("::Weaken push. Compressions are too deep");
+    }
+}
+
 void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, int height){
     QPixmap image(path);
     label->setPixmap(image.scaled(width, height, Qt::KeepAspectRatio));
@@ -197,14 +211,10 @@ void AED_Display::nextAEDStep(){
 
     displayMessage = "BEGIN CPR";
     ui->audioMessages->append("::Start CPR.");
-    int compression_depth = device.compressionDepth();
-    if (compression_depth == 0){
-      ui->audioMessages->append("::Push harder. Compressions are weak");
-    }else if(compression_depth == 1){
-      ui->audioMessages->append("::Good compression depth. Begin 2 min CPR");
-    }else if (compression_depth == 2){
-      ui->audioMessages->append("::Weaken push. Compressions are too deep");
-    }
+    step_timer->stop();
+    connect(cpr_compressions, &QTimer::timeout, this, &AED_Display::cpr_check);
+
+    cpr_compressions->start(5000);
     break;
     }
     case CheckCompressions:

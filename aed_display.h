@@ -47,7 +47,7 @@ private:
     Step currentStep; //keep track of the current step
     QTimer *step_timer;
     QTimer *displaytimer;
-
+    QTimer *cpr_compressions; // timer loops until compressions are satisfactory
 
 private slots:
     void powerOn();
@@ -57,6 +57,7 @@ private slots:
     void updateTimer();
     void adultPads();
     void childPads();
+    void cpr_check();
 };
 
 
