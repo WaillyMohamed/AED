@@ -27,7 +27,7 @@ private:
     Ui::AED_Display *ui;
     void setLabelImage(QLabel *label, const QString &path, int width, int height);
     void d_waveform(); // This method analyzes and displays the waveform. It also performs a shock on the patient if the rhythm is shockable.
-
+    void highlightCurrentStep(QLabel *label);
     AED_Device device;
     AED_Arrhythmia_Detector detect;
     int rhythm; // 0 VF, 1 VT, 2 ASYSTOLE, 3 SINUS
@@ -53,12 +53,12 @@ private slots:
     void powerOn();
     void nextAEDStep();
     void display_shock();
-    void timerUp();
     void updateTimer();
     void adultPads();
     void childPads();
     void cpr_check();
 };
+
 
 
 

@@ -92,8 +92,6 @@ void AED_Display::powerOn()
                     connect(step_timer, &QTimer::timeout, this, &AED_Display::nextAEDStep);
                     step_timer->start(5000);
 
-                    timerUp();
-
                 });
 
             });
@@ -102,18 +100,24 @@ void AED_Display::powerOn()
 }
 
 
-void AED_Display::timerUp()
-{
-    //qint64 c_time = displaytimer.elapsed() / 1000; // time passed in seconds
-    //ui->timer->setText(QString::fromStdString(std::to_string(c_time)));
-
-}
-
 void AED_Display::updateTimer()
 {
     // update the amount of seconds and display the minutes and seconds mm:ss
     device.update();
     ui->timer->setText(QString::fromStdString(device.displayTime()));
+}
+
+void AED_Display::highlightCurrentStep(QLabel *current_step)
+{
+  ui->a_responsiveness->setStyleSheet("");
+  ui->attach_pads->setStyleSheet("");
+  ui->a_help->setStyleSheet("");
+  ui->a_cpr->setStyleSheet("");
+  ui->a_cpr_2->setStyleSheet("");
+  ui->a_standclear->setStyleSheet("");
+
+  current_step->setStyleSheet("border: 2px solid red");
+
 }
 
 void AED_Display::adultPads()
@@ -168,15 +172,22 @@ void AED_Display::nextAEDStep(){
   switch (currentStep){
     case CheckResponsiveness:
     displayMessage = "CHECK RESPONSIVENESS!";
+    highlightCurrentStep(ui->a_responsiveness);
 
     c.checkBreathing();
     ui->audioMessages->append("::Check Responsiveness.");
     break;
+
+    //Call for help step
     case CallForHelp:
+    highlightCurrentStep(ui->a_help);
     displayMessage = "CALL FOR HELP!";
     ui->audioMessages->append("::Call for help.");
     break;
+
+    //Attach electrodes step
     case AttachElectrodes:
+    highlightCurrentStep(ui->attach_pads);
     displayMessage = "ATTACH ELECTRODES TO CHEST";
     // Allow user to choose which electrodes to place
     ui->adult->setEnabled(true);
@@ -184,7 +195,10 @@ void AED_Display::nextAEDStep(){
     ui->audioMessages->append("::Attach defib pads to patient's bare chest.");
     step_timer->stop(); // stop timer to give user time to choose which electrodes to place
     break;
+
+    //Stand clear analyzing patient step
     case StandClear:
+    highlightCurrentStep(ui->a_standclear);
     displayMessage = "ANALYSING PATIENT..";
     ui->audioMessages->append("::Don't touch patient. Analyzing."); // Audio messages played for Standing Clear
     QTimer::singleShot(3000, [=]{
@@ -196,6 +210,8 @@ void AED_Display::nextAEDStep(){
         }
     });
     break;
+
+    // Stand clear shock
     case StandClearShock:
     displayMessage = "STAND CLEAR (Shock Warning)\nDO NOT touch patient.";
     ui->audioMessages->append("::Shock will be delivered in three, two, one");
@@ -206,9 +222,12 @@ void AED_Display::nextAEDStep(){
 
     });
     break;
+
+    // Start CPR breathing
     case CPRBreathing:
   {
 
+    highlightCurrentStep(ui->a_cpr_2);
     displayMessage = "BEGIN CPR";
     ui->audioMessages->append("::Start CPR.");
     step_timer->stop();
@@ -217,7 +236,10 @@ void AED_Display::nextAEDStep(){
     cpr_compressions->start(5000);
     break;
     }
+
+    //Begin the compressions
     case CheckCompressions:
+    highlightCurrentStep(ui->a_cpr);
     displayMessage = "START CPR BREATHING";
     break;
   }
@@ -242,8 +264,6 @@ void AED_Display::display_shock()
     QString shock_count_string =  QString("Shock: %1").arg(shock_count);
     ui->shockCount->setText(shock_count_string);
     ui->progressBar->setValue(device.getchargeLevel());
-    qDebug() << "Here is the value of charge level: " << device.getchargeLevel();
-    qDebug() << "Here is the value of shock count: " << shock_count;
     step_timer->start(100); // Restart the timer again.
     ui->shock_button->setEnabled(false); // The shock button should not do anything unless another shockable rhythm is found
 }
@@ -251,7 +271,6 @@ void AED_Display::display_shock()
 void AED_Display::d_waveform()
 {
     rhythm = detect.detectHeartRhythm();
-    std::cout<<"Here is the value of rhythm " + std::to_string(rhythm)<<std::endl;
     if(rhythm == 0){ // Ventricular Fibrillation
         setLabelImage(ui->waveform,  ":/Waveforms/Ventricular Fibrillation.PNG",361, 200);
         ui->waveform_type->setText("Ventricular Fibrillation");
