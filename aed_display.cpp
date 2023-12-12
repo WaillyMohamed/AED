@@ -33,8 +33,8 @@ AED_Display::AED_Display(QWidget *parent)
     // Add shock button
 
     ui->shock_button->setIcon(QIcon(":/res/AED_Heart.png"));
-    ui->shock_button->setFixedSize(210,210);
-    ui->shock_button->setIconSize(QSize(210,210));
+    ui->shock_button->setFixedSize(140,140);
+    ui->shock_button->setIconSize(QSize(140,140));
     ui->shock_button->setEnabled(false); // disable this button until shockable rhythm is found.
     ui->shockCount->setText("Shock: 0");
 
