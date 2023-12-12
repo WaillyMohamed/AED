@@ -355,6 +355,23 @@ color: rgb(51, 209, 122);</string>
      <string>Child</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="attach">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>360</y>
+      <width>151</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 0, 0);color: rgb(255, 255, 255)
+</string>
+    </property>
+    <property name="text">
+     <string>Attach/Detach</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

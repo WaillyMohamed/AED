@@ -28,6 +28,7 @@ AED_Display::AED_Display(QWidget *parent)
     // Disable buttons for adult or child pad until place electrode step happens
     ui->adult->setEnabled(false);
     ui->child->setEnabled(false);
+    ui->attach->setEnabled(false);
 
     // Add shock button
 
@@ -41,6 +42,8 @@ AED_Display::AED_Display(QWidget *parent)
     ui->timer->setText("00:00");
     // Initialize the device
     device = AED_Device();
+    pads = AED_Electrode_Pads();
+
     step_timer = new QTimer(this);
     displaytimer = new QTimer(this); // timer to update the stopwatch
     cpr_compressions = new QTimer(this);
@@ -50,11 +53,15 @@ AED_Display::AED_Display(QWidget *parent)
     // Initialize the timers
     connect(displaytimer, &QTimer::timeout, this, &AED_Display::updateTimer);
 
-
+    // Buttons to choose between adult and child pads
     connect(ui->adult, SIGNAL(released()), this, SLOT(adultPads()));
     connect(ui->child, SIGNAL(released()), this, SLOT(childPads()));
+    // Button to attach/detach defib pads
+    connect(ui->attach, SIGNAL(released()), this, SLOT(pad_placement()));
+
     connect(ui->pushButton, SIGNAL (released()), this, SLOT(powerOn())); // connect power button
     connect(ui->shock_button, SIGNAL (released()), this, SLOT(display_shock())); // connect power button
+
 
 }
 
@@ -122,20 +129,16 @@ void AED_Display::highlightCurrentStep(QLabel *current_step)
 
 void AED_Display::adultPads()
 {
-    // Disable both buttons
+    pads.setChild_or_adult(2);
     ui->adult->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(51, 209, 122);");
-    ui->adult->setEnabled(false);
-    ui->child->setEnabled(false);
-    step_timer->start(5000);
+    ui->child->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255,255,255);");
 }
 
 void AED_Display::childPads()
 {
-
+    pads.setChild_or_adult(1);
     ui->child->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(51, 209, 122);");
-    ui->adult->setEnabled(false);
-    ui->child->setEnabled(false);
-    step_timer->start(5000);
+    ui->adult->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255,255,255);");
 }
 
 void AED_Display::cpr_check()
@@ -150,6 +153,40 @@ void AED_Display::cpr_check()
     }else if (compression_depth == 2){
       ui->audioMessages->append("::Weaken push. Compressions are too deep");
     }
+}
+
+void AED_Display::pad_placement()
+{
+    // Disable the other buttons after attaching them.
+    // Check if the pads are already attached
+    if(!pads.getStatus()){ // If pads are not placed:
+        pads.setStatus(true);
+        ui->adult->setEnabled(false);
+        ui->child->setEnabled(false);
+
+        // Move on to the next step
+        step_timer->start(5000);
+        ui->attach->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(51, 209, 122);");
+    }
+    else{ // If the pads are already placed and then detached
+        pads.setStatus(false); // detach the defib pads
+        pads.setChild_or_adult(0); // Set to default number
+        // Allow the buttons to be reselected between child and adult pads
+        ui->adult->setEnabled(true);
+        ui->child->setEnabled(true);
+        currentStep = AttachElectrodes;
+        ui->attach->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255, 255, 255);");
+        ui->child->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255, 255, 255);");
+        ui->adult->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255, 255, 255);");
+        ui->waveform->setVisible(false); // Do not display current waveform.
+        ui->waveform_type->setVisible(false);
+        ui->shock_button->setEnabled(false);
+        step_timer->start(5000);
+    }
+
+
+
+
 }
 
 void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, int height){
@@ -192,6 +229,7 @@ void AED_Display::nextAEDStep(){
     // Allow user to choose which electrodes to place
     ui->adult->setEnabled(true);
     ui->child->setEnabled(true);
+    ui->attach->setEnabled(true);
     ui->audioMessages->append("::Attach defib pads to patient's bare chest.");
     step_timer->stop(); // stop timer to give user time to choose which electrodes to place
     break;
@@ -298,6 +336,6 @@ void AED_Display::d_waveform()
         ui->shock_button->setEnabled(true);
         step_timer->stop(); // Stop steps timer to allow the user to click the shock button
     }
-
-
+    ui->waveform->setVisible(true); // necessary due to detaching defib case
+    ui->waveform_type->setVisible(true);
 }

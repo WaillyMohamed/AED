@@ -4,6 +4,7 @@
 #include "AED_Device.h"
 #include "AED_Arrhythmia_Detector.h"
 #include "AED_Audio.h"
+#include "AED_Electrode_Pads.h"
 
 #include <QMainWindow>
 #include <QLabel>
@@ -30,6 +31,7 @@ private:
     void highlightCurrentStep(QLabel *label);
     AED_Device device;
     AED_Arrhythmia_Detector detect;
+    AED_Electrode_Pads pads;
     int rhythm; // 0 VF, 1 VT, 2 ASYSTOLE, 3 SINUS
     int shock_count; // shock count wthat would be incremented
 
@@ -57,6 +59,7 @@ private slots:
     void adultPads();
     void childPads();
     void cpr_check();
+    void pad_placement();
 };
 
 
