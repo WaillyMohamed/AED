@@ -41,6 +41,15 @@ std::string AED_Device::powerOn()
     return message;
 }
 
+std::string AED_Device::powerOff()
+{
+    std::string message = "Device turning off...\n";
+    seconds = 0;
+    mode = STANDBY;
+    return message;
+
+}
+
 
 void AED_Device::setDeviceMode(DeviceMode newMode)
 {
@@ -79,6 +88,20 @@ std::string AED_Device::displayTime()
     return time;
 }
 
+std::string AED_Device::getMode() const
+{
+    std::string m = "";
+    switch(mode){
+        case ACTIVE:
+            m = "ACTIVE";
+            break;
+        case STANDBY:
+            m = "STANDBY";
+            break;
+    }
+    return m;
+}
+
 bool AED_Device::selfTest()
 {
     if (charge_level < 50)
@@ -94,4 +117,16 @@ bool AED_Device::selfTest()
 int AED_Device::compressionDepth(){
   srand(time(NULL));
   return rand() % 3;
+}
+
+std::string AED_Device::safetyFeature()
+{
+    srand(time(NULL));
+    int x = rand() % 1;
+    if(x == 0){
+        return "Plug in cable";
+    }
+    else{
+        return "Change batteries";
+    }
 }

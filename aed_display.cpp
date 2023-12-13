@@ -52,6 +52,7 @@ AED_Display::AED_Display(QWidget *parent)
 
     // Initialize the timers
     connect(displaytimer, &QTimer::timeout, this, &AED_Display::updateTimer);
+    connect(step_timer, &QTimer::timeout, this, &AED_Display::nextAEDStep);
 
     // Buttons to choose between adult and child pads
     connect(ui->adult, SIGNAL(released()), this, SLOT(adultPads()));
@@ -73,36 +74,76 @@ AED_Display::~AED_Display()
 
 void AED_Display::powerOn()
 {
-    // when the power button is pressed the device should power on
-    ui->pushButton->setEnabled(false);
-    displaytimer->start(1000);
-    //my thought proccess: I wanted a way to display the messages one at a time. starting from "Starting AED".
-    // should probably clear the screen afterwards.
-    QString aed_status = "Starting AED...\nAED self test complete\nDevice is operational and ready to use";
-    std::string message = device.powerOn();
-    QStringList lines = aed_status.split("\n");
 
-    ui->audioMessages->append("::Unit OK.\n::Stay Calm"); // Audio messages played for starting the AED
+    // reaches the if statement
+    if(device.getMode() == "ACTIVE"){ // If the AED in an active state
+        device.powerOff(); // resets timer and shocks in back-end. Sets to standby status
+        pads = AED_Electrode_Pads();
+        displaytimer->stop();
+        cpr_compressions->stop();
+        step_timer->stop();
+        // Reset visuals
+        ui->a_responsiveness->setStyleSheet("");
+        ui->attach_pads->setStyleSheet("");
+        ui->a_help->setStyleSheet("");
+        ui->a_cpr->setStyleSheet("");
+        ui->a_cpr_2->setStyleSheet("");
+        ui->a_standclear->setStyleSheet("");
+        // reset pads
+        ui->adult->setEnabled(false);
+        ui->child->setEnabled(false);
+        ui->attach->setEnabled(false);
+        ui->shock_button->setEnabled(false); // disable this button until shockable rhythm is found.
+        // Reset pad colors
+        ui->adult->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255,255,255);");
+        ui->child->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255,255,255);");
+        ui->attach->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255,255,255);");
+        // Reset display
+        ui->shockCount->setText("Shock: 0"); // reset shocks
+        ui->timer->setText("00:00"); // reset timer
+        shock_count = 0;
+        currentStep = CheckResponsiveness;
+        // Clear audio and display messages
+        ui->audioMessages->clear();
+        ui->LCDScreen->clear();
+        // Clear waveforms
+        ui->waveform->setVisible(false); // Do not display current waveform.
+        ui->waveform_type->setVisible(false);
+    }
+    else{
+        // when the power button is pressed the device should power on
 
-    if(message.find("Device is operational") != std::string::npos){
 
-        ui->LCDScreen->append("\n" + lines.at(0));
-        QTimer::singleShot(1000, [=]{
-            ui->LCDScreen->append(lines.at(1));
+        displaytimer->start(1000);
+        device.powerOn();
+        //my thought proccess: I wanted a way to display the messages one at a time. starting from "Starting AED".
+        // should probably clear the screen afterwards.
+        QString aed_status = "Starting AED...\nAED self test complete\nDevice is operational and ready to use";
+        std::string message = device.powerOn();
+        QStringList lines = aed_status.split("\n");
 
+        ui->audioMessages->append("::Unit OK.\n::Stay Calm"); // Audio messages played for starting the AED
+
+        if(message.find("Device is operational") != std::string::npos){
+
+            ui->LCDScreen->append("\n" + lines.at(0));
             QTimer::singleShot(1000, [=]{
-                ui->LCDScreen->append(lines.at(2));
+                ui->LCDScreen->append(lines.at(1));
 
                 QTimer::singleShot(1000, [=]{
-                    ui->LCDScreen->clear();
+                    ui->LCDScreen->append(lines.at(2));
 
-                    connect(step_timer, &QTimer::timeout, this, &AED_Display::nextAEDStep);
-                    step_timer->start(5000);
+                    QTimer::singleShot(1000, [=]{
+                        ui->LCDScreen->clear();
+
+
+                        step_timer->start(5000);
+
+                    });
 
                 });
-
             });
-        });
+        }
     }
 }
 

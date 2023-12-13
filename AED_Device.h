@@ -26,6 +26,7 @@ public:
 
     /*Perform self test and power on*/
     std::string powerOn();
+    std::string powerOff();
 
     /*Set the device mode for the AED*/
     void setDeviceMode(DeviceMode mode);
@@ -39,13 +40,15 @@ public:
     /*Compression Depth - this function determines what is a good vs weak compression*/
     int compressionDepth();
 
-
+    std::string safetyFeature(); // generates an issue
 
 
     int getSeconds() const;
     void update();
     std::string displayTime(); // Method will takes seconds and return a string that formats the time in hours and minutes
 
+
+    std::string getMode() const;
 
 private:
     int charge_level;
