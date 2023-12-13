@@ -70,7 +70,7 @@ AED_Display::AED_Display(QWidget *parent)
 
     // set minimum and maximum for qslider
     ui->horizontalSlider->setMinimum(0); // compression depth minimum 0 inches
-    ui->horizontalSlider->setMaximum(4); // max compression 4 inches
+    ui->horizontalSlider->setMaximum(40); // max compression 4 inches
     ui->horizontalSlider->setEnabled(false);
     // Set the compression depth slider invisible
     ui->horizontalSlider->setVisible(false);
@@ -121,6 +121,11 @@ void AED_Display::powerOn()
         // Clear waveforms
         ui->waveform->setVisible(false); // Do not display current waveform.
         ui->waveform_type->setVisible(false);
+
+        // Clear cpr depth slider and label
+        ui->horizontalSlider->setValue(0);
+        ui->horizontalSlider->setVisible(false);
+        ui->depth_value->setText("");
     }
     else{
         // when the power button is pressed the device should power on
@@ -255,6 +260,10 @@ void AED_Display::pad_placement()
         ui->waveform->setVisible(false); // Do not display current waveform.
         ui->waveform_type->setVisible(false);
         ui->shock_button->setEnabled(false);
+        // Clear cpr depth slider and label
+        ui->horizontalSlider->setValue(0);
+        ui->horizontalSlider->setVisible(false);
+        ui->depth_value->setText("");
         step_timer->start(5000);
     }
 
@@ -267,16 +276,20 @@ void AED_Display::cpr_comp_depth()
 {
     // Take current value of slider
     int current_depth = ui->horizontalSlider->value();
-    ui->depth_value->setText(QString::fromStdString(std::to_string(current_depth) + " Inches"));
+    ui->depth_value->setText(QString::fromStdString(std::to_string(current_depth/10) + "." + std::to_string(current_depth % 10) + " Inches"));
+
     // Check value with compression ratings
-    if(current_depth > 0 && current_depth < 1.9){ // Weak force
+    if(current_depth > 0 && current_depth < 19){ // Weak force
         ui->LCDScreen->setText("PUSH HARDER \n\n");
         ui->audioMessages->append("::Push harder. Compressions are weak");
     }
-    else if(current_depth > 1.9 && current_depth < 2.4){ // Good force
+    else if(current_depth > 19 && current_depth <= 24){ // Good force
         ui->LCDScreen->setText("GOOD COMPRESSIONS \n\n");
         ui->audioMessages->append("::Good compression depth. Begin 2 min CPR");
         step_timer->start(5000);
+        ui->horizontalSlider->setEnabled(false);
+
+
     }
     else{ // Too much force
         ui->LCDScreen->setText("WEAKEN PUSH \n\n");
@@ -368,7 +381,8 @@ void AED_Display::nextAEDStep(){
     step_timer->stop();
     ui->horizontalSlider->setEnabled(true);
     ui->horizontalSlider->setVisible(true);
-    ui->depth_value->setText("0");
+    ui->horizontalSlider->setValue(0);
+    ui->depth_value->setText("0 Inches");
     break;
     }
 

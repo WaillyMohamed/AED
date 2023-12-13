@@ -390,8 +390,8 @@ color: rgb(51, 209, 122);</string>
      <rect>
       <x>400</x>
       <y>200</y>
-      <width>62</width>
-      <height>17</height>
+      <width>101</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
