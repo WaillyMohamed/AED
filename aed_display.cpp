@@ -35,7 +35,6 @@ AED_Display::AED_Display(QWidget *parent)
     ui->attach->setEnabled(false);
 
     // Add shock button
-
     ui->shock_button->setIcon(QIcon(":/res/AED_Heart.png"));
     ui->shock_button->setFixedSize(140,140);
     ui->shock_button->setIconSize(QSize(140,140));
@@ -66,9 +65,16 @@ AED_Display::AED_Display(QWidget *parent)
     connect(ui->attach, SIGNAL(released()), this, SLOT(pad_placement()));
 
     connect(ui->pushButton, SIGNAL (released()), this, SLOT(powerOn())); // connect power button
+    ui->pushButton->setText("ON"); // Initially set the button on.
     connect(ui->shock_button, SIGNAL (released()), this, SLOT(display_shock())); // connect power button
 
-
+    // set minimum and maximum for qslider
+    ui->horizontalSlider->setMinimum(0); // compression depth minimum 0 inches
+    ui->horizontalSlider->setMaximum(4); // max compression 4 inches
+    ui->horizontalSlider->setEnabled(false);
+    // Set the compression depth slider invisible
+    ui->horizontalSlider->setVisible(false);
+    connect(ui->horizontalSlider, SIGNAL(sliderReleased()), this, SLOT(cpr_comp_depth()));
 }
 
 AED_Display::~AED_Display()
@@ -83,6 +89,7 @@ void AED_Display::powerOn()
     // reaches the if statement
     if(device.getMode() == "ACTIVE"){ // If the AED in an active state
         device.powerOff(); // resets timer and shocks in back-end. Sets to standby status
+        ui->pushButton->setText("ON"); // Set power button text to ON while AED is offline
         pads = AED_Electrode_Pads();
         displaytimer->stop();
         cpr_compressions->stop();
@@ -117,7 +124,9 @@ void AED_Display::powerOn()
     }
     else{
         // when the power button is pressed the device should power on
+
         if(device.selfTest() == true){
+          ui->pushButton->setText("OFF"); // Set power button text to OFF because the program will be active
           displaytimer->start(1000);
           device.powerOn();
           //my thought proccess: I wanted a way to display the messages one at a time. starting from "Starting AED".
@@ -254,6 +263,29 @@ void AED_Display::pad_placement()
 
 }
 
+void AED_Display::cpr_comp_depth()
+{
+    // Take current value of slider
+    int current_depth = ui->horizontalSlider->value();
+    ui->depth_value->setText(QString::fromStdString(std::to_string(current_depth) + " Inches"));
+    // Check value with compression ratings
+    if(current_depth > 0 && current_depth < 1.9){ // Weak force
+        ui->LCDScreen->setText("PUSH HARDER \n\n");
+        ui->audioMessages->append("::Push harder. Compressions are weak");
+    }
+    else if(current_depth > 1.9 && current_depth < 2.4){ // Good force
+        ui->LCDScreen->setText("GOOD COMPRESSIONS \n\n");
+        ui->audioMessages->append("::Good compression depth. Begin 2 min CPR");
+        step_timer->start(5000);
+    }
+    else{ // Too much force
+        ui->LCDScreen->setText("WEAKEN PUSH \n\n");
+        ui->audioMessages->append("::Weaken push. Compressions are too deep");
+    }
+    // Display current compression ratings
+    ui->LCDScreen->setAlignment(Qt::AlignCenter);
+}
+
 void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, int height){
     QPixmap image(path);
     label->setPixmap(image.scaled(width, height, Qt::KeepAspectRatio));
@@ -329,13 +361,14 @@ void AED_Display::nextAEDStep(){
     // Start CPR breathing
     case CPRBreathing:
   {
-
+    ui->horizontalSlider->setEnabled(false);
     highlightCurrentStep(ui->a_cpr_2);
     displayMessage = "BEGIN CPR";
     ui->audioMessages->append("::Start CPR.");
     step_timer->stop();
-
-    cpr_compressions->start(5000);
+    ui->horizontalSlider->setEnabled(true);
+    ui->horizontalSlider->setVisible(true);
+    ui->depth_value->setText("0");
     break;
     }
 

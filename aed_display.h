@@ -60,6 +60,7 @@ private slots:
     void childPads();
     void cpr_check();
     void pad_placement();
+    void cpr_comp_depth();
 };
 
 
