@@ -12,6 +12,7 @@
         <file>Waveforms/Sinus Rhythm or Pulseless Electrical Activity.PNG</file>
         <file>Waveforms/Ventricular Fibrillation.PNG</file>
         <file>Waveforms/Ventricular Tachycardia.PNG</file>
+        <file>res/Audio.png</file>
     </qresource>
     <qresource prefix="/new/prefix1"/>
 </RCC>

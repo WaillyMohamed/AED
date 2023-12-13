@@ -398,6 +398,19 @@ color: rgb(51, 209, 122);</string>
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="audioIcon">
+    <property name="geometry">
+     <rect>
+      <x>940</x>
+      <y>0</y>
+      <width>150</width>
+      <height>150</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>AudioIcon</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -26,6 +26,7 @@ AED_Display::AED_Display(QWidget *parent)
     setLabelImage(ui->a_cpr,  ":/res/CPR_Breath.PNG", 150, 150);
     setLabelImage(ui->a_cpr_2,  ":/res/CPR_Compressions.PNG", 150, 150);
     setLabelImage(ui->a_standclear,  ":/res/Stand_Clear.png", 150, 150);
+    setLabelImage(ui->audioIcon,  ":/res/Audio.png", 120, 120);
     ui->progressBar->setValue(charge);
 
 
