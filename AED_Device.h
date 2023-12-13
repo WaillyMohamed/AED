@@ -39,10 +39,6 @@ public:
     /*Set charge level*/
     void setChargeLevel(int cl);
 
-    /*Compression Depth - this function determines what is a good vs weak compression*/
-    int compressionRate();
-
-    double compressionDepth(int cv);
 
     std::string safetyFeature(); // generates an issue
 

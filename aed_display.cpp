@@ -207,28 +207,7 @@ void AED_Display::childPads()
     ui->adult->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255,255,255);");
 }
 
-void AED_Display::cpr_check()
-{
-    int compression_depth = device.compressionRate();
-    double cv = device.compressionDepth(compression_depth);
 
-    ui->horizontalSlider->setValue(cv);
-    std::cout << "Here  is the compression rate " << compression_depth  << std::endl;
-    std::cout << "Here  is the compression depth " << cv  << std::endl;
-    if (compression_depth == 0){
-      ui->LCDScreen->setText("PUSH HARDER \n\n");
-      ui->audioMessages->append("::Push harder. Compressions are weak");
-    }else if(compression_depth == 1){
-      ui->LCDScreen->setText("GOOD COMPRESSIONS \n\n");
-      ui->audioMessages->append("::Good compression depth. Begin 2 min CPR");
-      cpr_compressions->stop();
-      step_timer->start(5000);
-    }else if (compression_depth == 2){
-      ui->LCDScreen->setText("WEAKEN PUSH \n\n");
-      ui->audioMessages->append("::Weaken push. Compressions are too deep");
-    }
-    ui->LCDScreen->setAlignment(Qt::AlignCenter);
-}
 
 void AED_Display::pad_placement()
 {
