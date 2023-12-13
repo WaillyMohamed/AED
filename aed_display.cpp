@@ -53,6 +53,7 @@ AED_Display::AED_Display(QWidget *parent)
     // Initialize the timers
     connect(displaytimer, &QTimer::timeout, this, &AED_Display::updateTimer);
     connect(step_timer, &QTimer::timeout, this, &AED_Display::nextAEDStep);
+    connect(cpr_compressions, &QTimer::timeout, this, &AED_Display::cpr_check);
 
     // Buttons to choose between adult and child pads
     connect(ui->adult, SIGNAL(released()), this, SLOT(adultPads()));
@@ -186,14 +187,18 @@ void AED_Display::cpr_check()
 {
     int compression_depth = device.compressionDepth();
     if (compression_depth == 0){
+      ui->LCDScreen->setText("PUSH HARDER \n\n");
       ui->audioMessages->append("::Push harder. Compressions are weak");
     }else if(compression_depth == 1){
+      ui->LCDScreen->setText("GOOD COMPRESSIONS \n\n");
       ui->audioMessages->append("::Good compression depth. Begin 2 min CPR");
       cpr_compressions->stop();
       step_timer->start(5000);
     }else if (compression_depth == 2){
+      ui->LCDScreen->setText("WEAKEN PUSH \n\n");
       ui->audioMessages->append("::Weaken push. Compressions are too deep");
     }
+    ui->LCDScreen->setAlignment(Qt::AlignCenter);
 }
 
 void AED_Display::pad_placement()
@@ -310,7 +315,6 @@ void AED_Display::nextAEDStep(){
     displayMessage = "BEGIN CPR";
     ui->audioMessages->append("::Start CPR.");
     step_timer->stop();
-    connect(cpr_compressions, &QTimer::timeout, this, &AED_Display::cpr_check);
 
     cpr_compressions->start(5000);
     break;
