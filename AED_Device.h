@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 #include <ctime>
+#include <QDebug>
+#include <cmath>
 
 
 enum DeviceMode{
@@ -38,7 +40,9 @@ public:
     void setChargeLevel(int cl);
 
     /*Compression Depth - this function determines what is a good vs weak compression*/
-    int compressionDepth();
+    int compressionRate();
+
+    double compressionDepth(int cv);
 
     std::string safetyFeature(); // generates an issue
 

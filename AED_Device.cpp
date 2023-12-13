@@ -3,6 +3,7 @@
 
 AED_Device::AED_Device()
 {
+   // To model the charge/power being low, change this value to 5
     charge_level = 100;
     mode = STANDBY;
     seconds = 0;
@@ -36,7 +37,7 @@ std::string AED_Device::powerOn()
          std::cout << "Device is not operational. Please check the device.\n";
          std::cout << "[Visual -> Display Class] RED LED ON\n";
          std::cout << "[Audio -> Audio Class] Device not operational sound\n";
-         message = "Device is not operational. Please check the device.\n[Visual -> Display Class] RED LED ON\n[Audio -> Audio Class] Device not operational sound\n";
+         message = "Device is not operational. Please check the device.";
     }
     return message;
 }
@@ -104,7 +105,7 @@ std::string AED_Device::getMode() const
 
 bool AED_Device::selfTest()
 {
-    if (charge_level < 50)
+    if (charge_level < 5)
     {
         return false;
     }
@@ -114,9 +115,38 @@ bool AED_Device::selfTest()
     }
 }
 
-int AED_Device::compressionDepth(){
+int AED_Device::compressionRate(){
   srand(time(NULL));
+  //numbers to rep good & bad compressions. actual numbers
+  //lower bound = 2, higher = 2.4
+
   return rand() % 3;
+}
+
+double AED_Device::compressionDepth(int cv){
+  //generate compression depth from 0-1.9 depth ("weak compression")
+  // generate compression depth from 2-2.4 depth ("good compression")
+  // generate compression depth from 2.4-4 depth ("too strong compressions")
+
+  double compression_rate;
+
+  switch(cv){
+    srand(time(NULL));
+    case 0:
+    compression_rate = ((double) rand() / (double) RAND_MAX) * 1.9;
+    break;
+
+
+    case 1:
+    compression_rate = 2 + ((double) rand() / (double) RAND_MAX) * 0.4;
+    break;
+
+    case 2:
+    compression_rate = 2.4 + ((double) rand() / (double) RAND_MAX) * 1.6;
+    break;
+
+  }
+  return std::ceil(compression_rate * 100.0) / 100.0;
 }
 
 std::string AED_Device::safetyFeature()

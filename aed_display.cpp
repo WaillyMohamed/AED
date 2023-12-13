@@ -17,6 +17,8 @@ AED_Display::AED_Display(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle("AED Device");
 
+    int charge = device.getchargeLevel();
+
     // Set the image label for all the stages of the AED
     setLabelImage(ui->a_responsiveness, ":/res/Check_Responsiveness.png", 150, 150);
     setLabelImage(ui->attach_pads, ":/res/Attach_Electrode.png", 150, 150);
@@ -24,6 +26,8 @@ AED_Display::AED_Display(QWidget *parent)
     setLabelImage(ui->a_cpr,  ":/res/CPR_Breath.PNG", 150, 150);
     setLabelImage(ui->a_cpr_2,  ":/res/CPR_Compressions.PNG", 150, 150);
     setLabelImage(ui->a_standclear,  ":/res/Stand_Clear.png", 150, 150);
+    ui->progressBar->setValue(charge);
+
 
     // Disable buttons for adult or child pad until place electrode step happens
     ui->adult->setEnabled(false);
@@ -113,38 +117,42 @@ void AED_Display::powerOn()
     }
     else{
         // when the power button is pressed the device should power on
+        if(device.selfTest() == true){
+          displaytimer->start(1000);
+          device.powerOn();
+          //my thought proccess: I wanted a way to display the messages one at a time. starting from "Starting AED".
+          // should probably clear the screen afterwards.
+          QString aed_status = "Starting AED...\nAED self test complete\nDevice is operational and ready to use";
+          std::string message = device.powerOn();
+          QStringList lines = aed_status.split("\n");
+
+          ui->audioMessages->append("::Unit OK.\n::Stay Calm"); // Audio messages played for starting the AED
+
+          if(message.find("Device is operational") != std::string::npos){
+
+              ui->LCDScreen->append("\n" + lines.at(0));
+              QTimer::singleShot(1000, [=]{
+                  ui->LCDScreen->append(lines.at(1));
+
+                  QTimer::singleShot(1000, [=]{
+                      ui->LCDScreen->append(lines.at(2));
+
+                      QTimer::singleShot(1000, [=]{
+                          ui->LCDScreen->clear();
 
 
-        displaytimer->start(1000);
-        device.powerOn();
-        //my thought proccess: I wanted a way to display the messages one at a time. starting from "Starting AED".
-        // should probably clear the screen afterwards.
-        QString aed_status = "Starting AED...\nAED self test complete\nDevice is operational and ready to use";
-        std::string message = device.powerOn();
-        QStringList lines = aed_status.split("\n");
+                          step_timer->start(5000);
 
-        ui->audioMessages->append("::Unit OK.\n::Stay Calm"); // Audio messages played for starting the AED
+                      });
 
-        if(message.find("Device is operational") != std::string::npos){
+                  });
+              });
 
-            ui->LCDScreen->append("\n" + lines.at(0));
-            QTimer::singleShot(1000, [=]{
-                ui->LCDScreen->append(lines.at(1));
-
-                QTimer::singleShot(1000, [=]{
-                    ui->LCDScreen->append(lines.at(2));
-
-                    QTimer::singleShot(1000, [=]{
-                        ui->LCDScreen->clear();
-
-
-                        step_timer->start(5000);
-
-                    });
-
-                });
-            });
+          }
+        }else{
+          return;
         }
+
     }
 }
 
@@ -171,6 +179,7 @@ void AED_Display::highlightCurrentStep(QLabel *current_step)
 
 void AED_Display::adultPads()
 {
+    ui->audioMessages->append("::Adult pads have been selected");
     pads.setChild_or_adult(2);
     ui->adult->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(51, 209, 122);");
     ui->child->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255,255,255);");
@@ -178,6 +187,7 @@ void AED_Display::adultPads()
 
 void AED_Display::childPads()
 {
+    ui->audioMessages->append("::Child pads have been selected");
     pads.setChild_or_adult(1);
     ui->child->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(51, 209, 122);");
     ui->adult->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(255,255,255);");
@@ -185,7 +195,12 @@ void AED_Display::childPads()
 
 void AED_Display::cpr_check()
 {
-    int compression_depth = device.compressionDepth();
+    int compression_depth = device.compressionRate();
+    double cv = device.compressionDepth(compression_depth);
+
+    ui->horizontalSlider->setValue(cv);
+    std::cout << "Here  is the compression rate " << compression_depth  << std::endl;
+    std::cout << "Here  is the compression depth " << cv  << std::endl;
     if (compression_depth == 0){
       ui->LCDScreen->setText("PUSH HARDER \n\n");
       ui->audioMessages->append("::Push harder. Compressions are weak");
@@ -209,15 +224,19 @@ void AED_Display::pad_placement()
         pads.setStatus(true);
         ui->adult->setEnabled(false);
         ui->child->setEnabled(false);
+        ui->audioMessages->append("::Pads have been attached");
+
 
         // Move on to the next step
         step_timer->start(5000);
         ui->attach->setStyleSheet("background-color: rgb(0, 0, 0);color: rgb(51, 209, 122);");
     }
     else{ // If the pads are already placed and then detached
+        ui->audioMessages->append("::Pads have been detached");
         pads.setStatus(false); // detach the defib pads
         pads.setChild_or_adult(0); // Set to default number
         // Allow the buttons to be reselected between child and adult pads
+        ui->attach->setEnabled(false);
         ui->adult->setEnabled(true);
         ui->child->setEnabled(true);
         currentStep = AttachElectrodes;
@@ -333,10 +352,7 @@ void AED_Display::nextAEDStep(){
     currentStep = CheckResponsiveness;
     step_timer->stop();
   }else{
-    std::cout <<"[AED NEXT STEP] Inside the switch statement" << std::endl;
-    std::cout<<"Here is the value of current step" <<std::endl;
     currentStep = static_cast<Step>(static_cast<int>(currentStep) + 1);
-    std::cout<< currentStep << std::endl;
   }
 }
 
