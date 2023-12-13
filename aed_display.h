@@ -49,16 +49,16 @@ private:
     Step currentStep; //keep track of the current step
     QTimer *step_timer;
     QTimer *displaytimer;
-    QTimer *cpr_compressions; // timer loops until compressions are satisfactory
+
 
 private slots:
-    void powerOn();
+    void power();
     void nextAEDStep();
     void display_shock();
     void updateTimer();
     void adultPads();
     void childPads();
-    void cpr_check();
+
     void pad_placement();
     void cpr_comp_depth();
 };

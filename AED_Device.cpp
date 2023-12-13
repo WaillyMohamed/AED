@@ -115,39 +115,7 @@ bool AED_Device::selfTest()
     }
 }
 
-int AED_Device::compressionRate(){
-  srand(time(NULL));
-  //numbers to rep good & bad compressions. actual numbers
-  //lower bound = 2, higher = 2.4
 
-  return rand() % 3;
-}
-
-double AED_Device::compressionDepth(int cv){
-  //generate compression depth from 0-1.9 depth ("weak compression")
-  // generate compression depth from 2-2.4 depth ("good compression")
-  // generate compression depth from 2.4-4 depth ("too strong compressions")
-
-  double compression_rate;
-
-  switch(cv){
-    srand(time(NULL));
-    case 0:
-    compression_rate = ((double) rand() / (double) RAND_MAX) * 1.9;
-    break;
-
-
-    case 1:
-    compression_rate = 2 + ((double) rand() / (double) RAND_MAX) * 0.4;
-    break;
-
-    case 2:
-    compression_rate = 2.4 + ((double) rand() / (double) RAND_MAX) * 1.6;
-    break;
-
-  }
-  return std::ceil(compression_rate * 100.0) / 100.0;
-}
 
 std::string AED_Device::safetyFeature()
 {

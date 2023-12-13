@@ -49,14 +49,14 @@ AED_Display::AED_Display(QWidget *parent)
 
     step_timer = new QTimer(this);
     displaytimer = new QTimer(this); // timer to update the stopwatch
-    cpr_compressions = new QTimer(this);
+
     //Initialize the number of shocks
     shock_count = 0;
 
     // Initialize the timers
     connect(displaytimer, &QTimer::timeout, this, &AED_Display::updateTimer);
     connect(step_timer, &QTimer::timeout, this, &AED_Display::nextAEDStep);
-    connect(cpr_compressions, &QTimer::timeout, this, &AED_Display::cpr_check);
+
 
     // Buttons to choose between adult and child pads
     connect(ui->adult, SIGNAL(released()), this, SLOT(adultPads()));
@@ -64,7 +64,7 @@ AED_Display::AED_Display(QWidget *parent)
     // Button to attach/detach defib pads
     connect(ui->attach, SIGNAL(released()), this, SLOT(pad_placement()));
 
-    connect(ui->pushButton, SIGNAL (released()), this, SLOT(powerOn())); // connect power button
+    connect(ui->pushButton, SIGNAL (released()), this, SLOT(power())); // connect power button
     ui->pushButton->setText("ON"); // Initially set the button on.
     connect(ui->shock_button, SIGNAL (released()), this, SLOT(display_shock())); // connect power button
 
@@ -83,7 +83,7 @@ AED_Display::~AED_Display()
     delete step_timer;
 }
 
-void AED_Display::powerOn()
+void AED_Display::power()
 {
 
     // reaches the if statement
@@ -92,7 +92,7 @@ void AED_Display::powerOn()
         ui->pushButton->setText("ON"); // Set power button text to ON while AED is offline
         pads = AED_Electrode_Pads();
         displaytimer->stop();
-        cpr_compressions->stop();
+
         step_timer->stop();
         // Reset visuals
         ui->a_responsiveness->setStyleSheet("");
