@@ -396,8 +396,11 @@ void AED_Display::nextAEDStep(){
   ui->LCDScreen->setAlignment(Qt::AlignCenter);
 
   if (currentStep == CheckCompressions){
-    currentStep = CheckResponsiveness;
-    step_timer->stop();
+    currentStep = StandClear;
+    ui->horizontalSlider->setEnabled(false);
+    ui->horizontalSlider->setVisible(false);
+    ui->horizontalSlider->setValue(0);
+    ui->depth_value->setText("");
   }else{
     currentStep = static_cast<Step>(static_cast<int>(currentStep) + 1);
   }
