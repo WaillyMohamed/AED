@@ -13,13 +13,16 @@ https://www.youtube.com/watch?v=Fw1Org2t4_M&ab_channel=BoosterBlast
 - Enos Odigie
 
 ### Organization of Files
-- AED_Device Files: AED_Device.cpp AED_Device.h
-- AED_Arrhythmia_Detector Files: AED_Arrhythmia_Detector.cpp AED_Arrhythmia_Detector.h
-- AED_Audio Files: AED_Audio.cpp AED_Audio.h
-- AED_Electrode_Pads Files: AED_Electrode_Pads.cpp AED_Electrode_Pads.h
+#### Source Files
+- AED_Device: AED_Device.cpp AED_Device.h
+- AED_Arrhythmia_Detector: AED_Arrhythmia_Detector.cpp AED_Arrhythmia_Detector.h
+- AED_Audio: AED_Audio.cpp AED_Audio.h
+- AED_Electrode_Pads: AED_Electrode_Pads.cpp AED_Electrode_Pads.h
 - README file: README.md
-- aed_display Files: aed_display.h aed_display.cpp aed_display.ui
-Resources: resources.qrc
+- aed_display: aed_display.h aed_display.cpp aed_display.ui
+  
+#### Resources: 
+- resources.qrc
 - Waveforms folder: Contains static images for Waveforms. 
 - res folder: Contains images for each step of the AED and the audio image icon.
 -.pro Files: AED.pro
@@ -33,7 +36,7 @@ What each member did:
 - Designed the graphical user interface (GUI), aed step progression & visual indicator
 - Orchestrated the program flow aligning it with the project specifications.
 - Developed the application logic, fine-tuning the functionality to meet user needs.
-- Traceability matrix
+- Traceability matrix & class design
 
 
 #### Wailly:
