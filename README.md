@@ -11,9 +11,6 @@ The final project for COMP 3004 involved the simulation of an Automated Defibril
 - Enos Odigie
 
 What each member did: 
-Is this ok for the readme:
-
-What each member did: 
 #### Chigo:
 - Designed the graphical user interface (GUI), aed step progression & visual indicator
 - Orchestrated the program flow aligning it with the project specifications.
