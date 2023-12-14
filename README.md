@@ -21,7 +21,7 @@ Is this ok for the readme:
 
 What each member did: 
 #### Chigo:
-- Designed the graphical user interface (GUI) & aed step progression
+- Designed the graphical user interface (GUI), aed step progression & visual indicator
 - Orchestrated the program flow aligning it with the project specifications.
 - Developed the application logic, fine-tuning the functionality to meet user needs.
 - Traceability matrix
@@ -33,6 +33,7 @@ What each member did:
 - Contributed significantly to the application logic, ensuring seamless operation and functionality.
 - Handled the implementation of the safety scenarios eg loss of connection, low battery
 - Developed the state diagram from the provided project specifications
+- Design decision/explanation
 
 #### Temi:
 - Constructed detailed sequence diagrams, providing a clear depiction of the application flow.
