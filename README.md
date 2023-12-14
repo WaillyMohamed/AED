@@ -13,7 +13,6 @@ The final project for COMP 3004 involved the simulation of an Automated Defibril
 What each member did: 
 Is this ok for the readme:
 
-"""
 #### Team Members - TA Zoe
 - Chigozirim Eke
 - Wailly Mohamed
