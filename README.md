@@ -3,6 +3,8 @@
 ### Details
 The final project for COMP 3004 involved the simulation of an Automated Defibrillator 
 
+### Video link
+https://www.youtube.com/watch?v=Fw1Org2t4_M&ab_channel=BoosterBlast 
 
 #### Team Members - TA Zoe
 - Chigozirim Eke
