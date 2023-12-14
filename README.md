@@ -53,4 +53,3 @@ What each member did:
 - Developed a class to represent audio prompts, enhancing user interaction with the system
 - Created a core class for electrode placement, contributing to the application's functionality.
 
-"""
