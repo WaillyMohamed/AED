@@ -25,6 +25,9 @@ res folder: Contains images for each step of the AED and the audio image icon.
 .pro Files: AED.pro
 main.cpp
 
+### Documentation
+"(Team 43 Submission) COMP3004 Final Project" (This Google Document contains the Design Documentation portion of the Final Project)
+
 What each member did: 
 #### Chigo:
 - Designed the graphical user interface (GUI), aed step progression & visual indicator
