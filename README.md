@@ -13,17 +13,17 @@ https://www.youtube.com/watch?v=Fw1Org2t4_M&ab_channel=BoosterBlast
 - Enos Odigie
 
 ### Organization of Files
-AED_Device Files: AED_Device.cpp AED_Device.h
-AED_Arrhythmia_Detector Files: AED_Arrhythmia_Detector.cpp AED_Arrhythmia_Detector.h
-AED_Audio Files: AED_Audio.cpp AED_Audio.h
-AED_Electrode_Pads Files: AED_Electrode_Pads.cpp AED_Electrode_Pads.h
-README file: README.md
-aed_display Files: aed_display.h aed_display.cpp aed_display.ui
+- AED_Device Files: AED_Device.cpp AED_Device.h
+- AED_Arrhythmia_Detector Files: AED_Arrhythmia_Detector.cpp AED_Arrhythmia_Detector.h
+- AED_Audio Files: AED_Audio.cpp AED_Audio.h
+- AED_Electrode_Pads Files: AED_Electrode_Pads.cpp AED_Electrode_Pads.h
+- README file: README.md
+- aed_display Files: aed_display.h aed_display.cpp aed_display.ui
 Resources: resources.qrc
-Waveforms folder: Contains static images for Waveforms. 
-res folder: Contains images for each step of the AED and the audio image icon.
-.pro Files: AED.pro
-main.cpp
+- Waveforms folder: Contains static images for Waveforms. 
+- res folder: Contains images for each step of the AED and the audio image icon.
+-.pro Files: AED.pro
+- main.cpp
 
 ### Documentation
 "(Team 43 Submission) COMP3004 Final Project" (This Google Document contains the Design Documentation portion of the Final Project)
