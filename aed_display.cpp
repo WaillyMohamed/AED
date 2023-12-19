@@ -285,14 +285,6 @@ void AED_Display::setLabelImage(QLabel *label, const QString &path, int width, i
 
 }
 
-/*Note: Figure out a way to end once last stage is reached
-This function handles the AED step progression
-It updates a displayImage at each step and displays the final message
-
-Status: Complete!
-
-@TODO: Put the respective audio for each stage too
-*/
 void AED_Display::nextAEDStep(){
   QString displayMessage;
   AED_Audio c;
